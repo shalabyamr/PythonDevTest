@@ -12,7 +12,7 @@ def format_time(td):
     return f"{hours:02}:{minutes:02}:{seconds:02},{milliseconds:03}"
 
 
-def text_to_srt(input_text_file, output_srt_file, duration_per_line=3):
+def text_to_srt(**kwargs):
     """
     Reads a text file and converts its content into an .srt subtitle file.
 
@@ -32,17 +32,15 @@ def text_to_srt(input_text_file, output_srt_file, duration_per_line=3):
         - Creates an .srt file with the generated subtitles.
     """
     try:
-        with open(input_text_file, "r", encoding="utf-8") as file:
+        with open(file=kwargs['input_text_file'], mode="r", encoding="utf-8") as file:
             text = file.read()
 
         lines = text.split(". ")  # Split into sentences
         subtitles = []
         current_time = timedelta(0)  # Start at 00:00:00,000
-        total_runtime = 0
         for i, line in enumerate(lines, start=1):
             start = format_time(current_time)
-            current_time += timedelta(seconds=duration_per_line)
-            total_runtime += duration_per_line
+            current_time += timedelta(seconds=kwargs['duration_per_line'])
             end = format_time(current_time)
 
             subtitle_entry = (
@@ -53,19 +51,17 @@ def text_to_srt(input_text_file, output_srt_file, duration_per_line=3):
 
             subtitles.append(subtitle_entry)
 
-        with open(output_srt_file, "w", encoding="utf-8") as f:
+        with open(file=kwargs['output_srt_file'], mode="w", encoding="utf-8") as f:
             f.writelines(subtitles)
 
-        print(f"Subtitle file saved as {output_srt_file}")
-        return total_runtime + 3
+        print(f"Subtitle file saved as {kwargs['output_srt_file']}")
 
     except Exception as e:
         print(f"Error: {e}")
 
 
 
-
-def add_subtitles(input_video, subtitle_file, output_video):
+def add_subtitles(**kwargs):
     """
     Adds hardcoded subtitles to a video using FFmpeg.
 
@@ -86,11 +82,11 @@ def add_subtitles(input_video, subtitle_file, output_video):
     try:
         (
             ffmpeg
-            .input(input_video)
-            .output(output_video, vf=f"subtitles={subtitle_file}", vcodec="libx264", acodec="aac")
+            .input(kwargs['input_video'])
+            .output(kwargs['output_video'], vf=f"subtitles={kwargs['subtitle_file']}", vcodec="libx264", acodec="aac")
             .run(overwrite_output=True)
         )
-        print(f"Video saved with subtitles: {output_video}")
+        print(f"Video saved with subtitles: {kwargs['output_video']}")
     except Exception as e:
         print(f"An error occurred: {e}")
 

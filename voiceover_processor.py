@@ -1,7 +1,7 @@
 from gtts import gTTS
 import ffmpeg
 
-def text_file_to_speech(txt_file, output_audio="./voice/voiceover.mp3", lang="en"):
+def text_file_to_speech(**kwargs):
     """
     Converts a text file to speech using Google Text-to-Speech (gTTS).
 
@@ -21,22 +21,22 @@ def text_file_to_speech(txt_file, output_audio="./voice/voiceover.mp3", lang="en
     """
     try:
         # Read the text file
-        with open(txt_file, "r", encoding="utf-8") as file:
+        with open(file=kwargs['txt_file'], mode="r", encoding="utf-8") as file:
             text = file.read()
 
         # Convert text to speech
-        tts = gTTS(text, lang=lang)
+        tts = gTTS(text, lang=kwargs['lang'])
 
-        tts.save(output_audio)
-        print(f"Speech saved as: {output_audio}")
+        tts.save(kwargs['output_audio'])
+        print(f"\n*****\nText {kwargs['txt_file']}-to-Speech saved as: {kwargs['output_audio']}\n*****")
+        mp3_duration = int(round(float(ffmpeg.probe(kwargs['output_audio'])['format']['duration']), 0))
+        print(f"Duration oft the MP3 [ Voice Over ] File is: {mp3_duration}\n********\n")
+        return mp3_duration
     except Exception as e:
         print(f"Error: {e}")
 
 
-
-import ffmpeg
-
-def add_voiceover_to_video(input_video, voiceover_audio, output_video):
+def add_voiceover_to_video(**kwargs):
     """
     Merges a video with a voice-over (narration) audio file.
 
@@ -56,19 +56,22 @@ def add_voiceover_to_video(input_video, voiceover_audio, output_video):
     """
     try:
         # Load input video and narration audio
-        video = ffmpeg.input(input_video)
-        original_audio = ffmpeg.input(voiceover_audio)
-        narration_audio = ffmpeg.input(voiceover_audio).audio
-        mixed_audio = ffmpeg.filter([original_audio, narration_audio], 'amix', inputs=2, duration='first', dropout_transition=0)
+        video = ffmpeg.input(kwargs['input_video'])
+        original_audio = ffmpeg.input(kwargs['original_audio'])
+        narration_audio = ffmpeg.input(kwargs['narration_audio'])
+        # Mix audio properly
+        mixed_audio = ffmpeg.filter([original_audio.audio, narration_audio.audio], 'amix', duration='first')
 
-        # Merge audio with video (replacing original audio)
+        # Output the mixed audio
+        output = ffmpeg.output(mixed_audio, "./audio/mixed_audio.mp3")
+        output.run(overwrite_output=True)
         (
             ffmpeg
-            .output(video, mixed_audio, output_video, vcodec="libx264", acodec="aac", strict="experimental")
+            .output(video, mixed_audio, kwargs['output_video'], vcodec="libx264", acodec="aac", strict="experimental")
             .run(overwrite_output=True)
         )
 
-        print(f"Video with voiceover saved as: {output_video}")
+        print(f"Video with voiceover saved as: {kwargs['output_video']}")
 
     except Exception as e:
         print(f"Error: {e}")
