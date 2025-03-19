@@ -1,4 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
+from subtitles_processor import text_to_srt, add_subtitles
+from video_processor import create_video
+from voiceover_processor import text_file_to_speech, add_voiceover_to_video
 
 class ImageReader:
     def __init__(self):
@@ -15,15 +18,16 @@ class ImageReader:
         self.image_attributes_dict = None
         self.image_path = None
         self.im = None
+        self.voice_over_duration = None
 
-    def read_image(self, image_path:str):
+    def read_image(self, **kwargs):
         """
         Reads an image from a specified path. The Read Image is displayed in a separate window.
         :param image_path:str: Path to the image
         :return: None. Object is self-contained.
         """
-        self.im = Image.open(image_path)
-        self.image_path = image_path
+        self.im = Image.open(kwargs['image_path'])
+        self.image_path = kwargs['image_path']
         print(f"Successfully Read Image from Path: {self.image_path}.  Image Attributes:\n\tImage Format: {self.im.format}\n\t"
               f"Image Size: {self.im.size}\n\t"
               f"Color Mode: {self.im.mode}\n")
@@ -59,8 +63,19 @@ class ImageReader:
         self.im.show()
         self.im.save('./images/out.jpg')
 
+    def text_to_srt(self, **kwargs):
+        text_to_srt(**kwargs)
 
+    def add_subtitles(self, **kwargs):
+        add_subtitles(**kwargs)
 
+    def create_video(self, **kwargs):
+        create_video(**kwargs)
 
+    def text_file_to_speech(self, **kwargs):
+        self.voice_over_duration =  text_file_to_speech(**kwargs)
+
+    def add_voiceover_to_video(self, **kwargs):
+        add_voiceover_to_video(**kwargs)
 
 

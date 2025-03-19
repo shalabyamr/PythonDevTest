@@ -1,6 +1,6 @@
 import ffmpeg
 
-def create_video(image_path, output_video:str, audio_path:str, duration:int=10, fps:int=30):
+def create_video(**kwargs):
                 """
                 Creates a short video from an image using ffmpeg-python.
                 :param image_path:str: Path to the input image
@@ -11,17 +11,18 @@ def create_video(image_path, output_video:str, audio_path:str, duration:int=10, 
                 """
                 (
                     ffmpeg
-                    .input(image_path, loop=1, t=duration)
+                    .input(kwargs['image_path'], loop=1, t=kwargs['duration'])
                     .filter("scale", 1280, 720)
-                    .output(ffmpeg.input(audio_path), output_video, vcodec="libx264", acodec="aac", pix_fmt="yuv420p", r=fps,
+                    .output(ffmpeg.input(kwargs['audio_path']), kwargs['output_video'], vcodec="libx264", acodec="aac"
+                            , pix_fmt="yuv420p", r=kwargs['fps'],
                             shortest=None)
                     .run(overwrite_output=True)
                 )
-                print(f"Video saved as {output_video}")
+                print(f"Video saved as {kwargs['output_video']}")
 
 
 
-def add_subtitle(input_video, subtitle_file, output_video):
+def add_subtitle(**kwargs):
     """
         Adds hardcoded subtitles to a video.
         This function overlays subtitles onto the video permanently, making them
@@ -47,9 +48,9 @@ def add_subtitle(input_video, subtitle_file, output_video):
         """
     (
         ffmpeg
-        .input(input_video)
-        .filter("subtitles", subtitle_file)
-        .output(output_video, c="copy")
+        .input(kwargs['input_video'])
+        .filter("subtitles", kwargs['subtitle_file'])
+        .output(kwargs['output_video'], c="copy")
         .run(overwrite_output=True)
     )
 
