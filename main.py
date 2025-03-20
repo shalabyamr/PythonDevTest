@@ -27,6 +27,6 @@ my_image.add_voiceover_to_video(input_video="./videos/out_captions.mp4",
                                 narration_audio="./voice/voiceover.mp3",
                                 original_audio = "./audio/go-beyond.mp3",
                                 output_video="./videos/final_video.mp4")
-# Final Step Delete other videos keeping the last.
 
+# Final Step Delete other videos keeping the last.
 for f in glob.glob("./videos/out*.mp4"): os.remove(f)
