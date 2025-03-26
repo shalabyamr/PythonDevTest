@@ -1,0 +1,95 @@
+1
+00:00:00,000 --> 00:00:03,000
+What is the Super Learner?
+
+The super learner is a general loss-based learning method designed to find the optimal
+combination of a set of learners.
+
+2
+00:00:03,000 --> 00:00:06,000
+The super learner framework is built on the theory
+of cross-validation and allows for a general class of algorithms to be considered for
+the ensemble.
+
+3
+00:00:06,000 --> 00:00:09,000
+The oracle results for the cross-validation selector are extended to the
+super learner.
+
+4
+00:00:09,000 --> 00:00:12,000
+Due to the established oracle results for the cross-validation selector,
+the super learner is proven to represent an asymptotically optimal framework for
+learning.
+
+5
+00:00:12,000 --> 00:00:15,000
+We discuss the super learner algorithm and demonstrate the method on a
+series of data analysis problems.
+
+6
+00:00:15,000 --> 00:00:18,000
+The super learner framework is extended to cover
+censored data by applying an appropriate observed data loss function.
+
+7
+00:00:18,000 --> 00:00:21,000
+The final
+chapter presents an R package for implementing the super learner based on a general
+library of learners.
+
+Chapter 1
+
+Introduction
+
+One of the most commonly used statistical procedures is estimator selection.
+Given a set of observations and a collection of candidate learners, an estimator selection procedure traditionally selects a single estimator from the collection based on a
+criterion (e.g.
+
+8
+00:00:21,000 --> 00:00:24,000
+minimizing the negative log likelihood).
+
+9
+00:00:24,000 --> 00:00:27,000
+Numerous methods exist for
+the candidate learners, an overview of various statistical methods for the candidate
+learners can be found in [44].
+The super learner is based on the general theory of loss-based estimation [87].
+Therefore, the framework applies to a variety of estimation problems including density
+estimation and prediction.
+
+10
+00:00:27,000 --> 00:00:30,000
+As long as the parameter of interest can be defined as the
+minimizer of the expected loss function, the super learner framework will apply.
+Before introducing the super learner, a short description of cross-validation is
+presented.
+
+11
+00:00:30,000 --> 00:00:33,000
+The second chapter contains the proposed super learner algorithm and
+the oracle results.
+
+12
+00:00:33,000 --> 00:00:36,000
+Chapter 3 contains a collection of practical demonstrations of
+the super learner on both simulated and real data sets.
+
+13
+00:00:36,000 --> 00:00:39,000
+Chapter 4 is an extended
+example of the super learner for the specific case of predicting treatment effects.
+Chapter 5 outlines how the super learner framework can be extended to censored
+data.
+
+14
+00:00:39,000 --> 00:00:42,000
+Chapter 6 contains a detailed description of the software implementation of
+the super learner framework.
+
+15
+00:00:42,000 --> 00:00:45,000
+Finally, Chapter 7 contains the conclusion and future
+work..
+
